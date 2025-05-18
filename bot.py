@@ -1,6 +1,7 @@
 import discord
 from discord.ext import tasks, commands
 import datetime
+from zoneinfo import ZoneInfo  # Deutsche Zeitzone
 import os
 import random
 
@@ -92,7 +93,7 @@ async def on_ready():
 
 @tasks.loop(minutes=1)
 async def send_daily_message():
-    now = datetime.datetime.now()
+    now = datetime.datetime.now(ZoneInfo("Europe/Berlin"))
     if now.hour == 8 and now.minute == 0:
         channel = bot.get_channel(CHANNEL_ID)
         weekday = now.weekday()
@@ -114,7 +115,7 @@ async def send_daily_message():
 
 @tasks.loop(minutes=1)
 async def send_friday_evening_message():
-    now = datetime.datetime.now()
+    now = datetime.datetime.now(ZoneInfo("Europe/Berlin"))
     if now.weekday() == 4 and now.hour == 20 and now.minute == 0:
         channel = bot.get_channel(CHANNEL_ID)
         msg = get_friday_evening_message()
